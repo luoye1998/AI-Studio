@@ -219,9 +219,39 @@ export function createDemoProject(): Project {
       folder: '~/Documents/screenwriting-books',
       mode: 'smart',
       docs: [
-        { id: uid('doc'), name: '故事·材质·结构·风格与银幕剧作原理', kind: 'method', words: 182_000, enabled: true },
-        { id: uid('doc'), name: '编剧步步为营', kind: 'method', words: 96_000, enabled: true },
-        { id: uid('doc'), name: '参考剧本_雨夜类型合集', kind: 'script', words: 41_000, enabled: false },
+        {
+          id: uid('doc'),
+          name: '故事·材质·结构·风格与银幕剧作原理',
+          kind: 'method',
+          words: 182_000,
+          enabled: true,
+          content:
+            '故事的事件必须由人物的选择推动，而不是由巧合推动。每一次场景转换都应回答一个问题，同时提出新的问题。' +
+            '冲突的层级分为内在、个人与超个人：好的商业剧本通常三层同时存在，观众被表层悬念抓住，被内层情感留住。' +
+            '开场十分钟决定了观众是否愿意相信这个故事。不要在开场解释世界观，要让角色在压力下暴露世界观。' +
+            '对白的功能不是传递信息，而是角色在试图改变对方。如果一个场景里没有人试图改变另一个人，这场戏就可以删掉。' +
+            '节奏不是快慢，而是信息的密度变化：连续三场高密度之后必须留一口气，否则观众会失去感知能力。',
+        },
+        {
+          id: uid('doc'),
+          name: '编剧步步为营',
+          kind: 'method',
+          words: 96_000,
+          enabled: true,
+          content:
+            '写分场大纲时，先写每一场的“戏剧问题”：这场戏结束时，观众应该比开始时多知道什么。' +
+            '每场戏控制在 30 秒到 2 分钟之间，超过 2 分钟必须有新的信息进入，否则拆场。' +
+            '人物的出场应该带着一个具体的动作，而不是一段自我介绍。动作暴露身份，台词只暴露态度。' +
+            '反转不是把观众骗过去，而是让观众回头看时发现线索早就在那里。' +
+            '结尾不是解决问题，而是让人物付出代价后仍然做出选择。',
+        },
+        {
+          id: uid('doc'),
+          name: '参考剧本_雨夜类型合集',
+          kind: 'script',
+          words: 41_000,
+          enabled: false,
+        },
       ],
     },
     palette: 'p-fincher',

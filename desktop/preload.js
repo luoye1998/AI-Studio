@@ -7,6 +7,7 @@ contextBridge.exposeInMainWorld('workstream', {
   isDesktop: true,
   platform: process.platform,
   pickFolder: () => ipcRenderer.invoke('ws:pickFolder'),
+  readMarkdown: (folder) => ipcRenderer.invoke('ws:readMarkdown', folder),
   saveFile: (payload) => ipcRenderer.invoke('ws:saveFile', payload),
   openFile: () => ipcRenderer.invoke('ws:openFile'),
   appInfo: () => ipcRenderer.invoke('ws:appInfo'),

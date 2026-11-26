@@ -85,6 +85,7 @@ interface AppState {
   toggleKnowledge: () => void;
   setKnowledgeMode: (mode: 'smart' | 'method-only' | 'off') => void;
   setKnowledgeFolder: (folder: string) => void;
+  mountDocs: (folder: string, docs: { name: string; content: string }[]) => void;
   toggleDoc: (id: string) => void;
 
   // settings
@@ -572,6 +573,30 @@ export const useApp = create<AppState>()(
                           { id: uid('doc'), name: '故事·材质·结构·风格与银幕剧作原理', kind: 'method' as const, words: 182_000, enabled: true },
                           { id: uid('doc'), name: '编剧步步为营', kind: 'method' as const, words: 96_000, enabled: true },
                         ],
+                  },
+                }
+              : p
+          ),
+        })),
+
+      mountDocs: (folder, docs) =>
+        set((s) => ({
+          projects: s.projects.map((p) =>
+            p.id === s.activeId
+              ? {
+                  ...p,
+                  knowledge: {
+                    mounted: docs.length > 0,
+                    folder,
+                    mode: docs.length ? 'smart' : p.knowledge.mode,
+                    docs: docs.map((d) => ({
+                      id: uid('doc'),
+                      name: d.name,
+                      kind: /剧本|script|screenplay/i.test(d.name) ? ('script' as const) : ('method' as const),
+                      words: d.content.length,
+                      enabled: true,
+                      content: d.content.slice(0, 60_000),
+                    })),
                   },
                 }
               : p

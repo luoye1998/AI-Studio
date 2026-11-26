@@ -2,6 +2,7 @@ import type { Project, Shot, StageId } from './types';
 import { STAGE_ORDER, stageById } from './stages';
 import { skillByCode } from './skills';
 import { paletteById } from './palettes';
+import { retrieveContext } from './kb';
 
 /** 已锁定的上游定稿（上下文隔离：只喂这些，不喂草稿） */
 export function lockedContext(project: Project, id: StageId): { stage: StageId; name: string; content: string }[] {
@@ -57,6 +58,24 @@ export function compileStagePrompt(project: Project, id: StageId): string {
     parts.push('');
     parts.push('## 本步需求（硬规则）');
     parts.push(st.notes.trim());
+  }
+
+  // 本地知识库：只在启用且文档带正文时参与检索
+  const kbDocs = project.knowledge.docs
+    .filter((d) => d.enabled && d.content && d.content.trim())
+    .map((d) => ({ id: d.id, name: d.name, content: d.content ?? '' }));
+  if (project.knowledge.mode !== 'off' && kbDocs.length) {
+    const query = [project.name, project.logline, project.genre, st.notes, def.tagline].join(' ');
+    const hits = retrieveContext(kbDocs, query, { k: project.knowledge.mode === 'method-only' ? 1 : 2, maxChars: 600 });
+    if (hits.length) {
+      parts.push('');
+      parts.push('## 参考资料节选（本地知识库检索结果，仅作风格与结构参考，不得照抄内容）');
+      for (const h of hits) {
+        parts.push(`### ${h.name}`);
+        parts.push(h.snippet);
+        parts.push('');
+      }
+    }
   }
 
   parts.push('');

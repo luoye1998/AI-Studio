@@ -52,6 +52,25 @@ describe('阶段提示词编译', () => {
     const outline = p.stages.outline.content.slice(0, 40);
     expect(compileStagePrompt(p, 'script')).toContain(outline);
   });
+
+  it('挂载的知识库会注入检索节选', () => {
+    const p = createDemoProject();
+    const text = compileStagePrompt(p, 'script');
+    expect(text).toContain('参考资料节选');
+    expect(text).toContain('本地知识库');
+  });
+
+  it('知识库关闭时不再注入节选', () => {
+    const p = createDemoProject();
+    p.knowledge.mode = 'off';
+    expect(compileStagePrompt(p, 'script')).not.toContain('参考资料节选');
+  });
+
+  it('启用的文档被全部停用时也不注入', () => {
+    const p = createDemoProject();
+    p.knowledge.docs = p.knowledge.docs.map((d) => ({ ...d, enabled: false }));
+    expect(compileStagePrompt(p, 'script')).not.toContain('参考资料节选');
+  });
 });
 
 describe('镜头提示词编译', () => {

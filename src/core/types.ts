@@ -147,6 +147,8 @@ export interface KnowledgeDoc {
   kind: 'method' | 'script' | 'reference';
   words: number;
   enabled: boolean;
+  /** 挂载时读取的正文（有长度上限），用于本地检索 */
+  content?: string;
 }
 
 export interface KnowledgeBinding {

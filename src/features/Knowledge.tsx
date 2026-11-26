@@ -1,6 +1,8 @@
+import { useMemo, useState } from 'react';
 import { Icon } from '../ui/Icons';
 import { SectionTitle } from '../ui/kit';
-import { pickFolder } from '../core/desktop';
+import { mountKnowledgeFolder } from '../core/desktop';
+import { buildIndex, search } from '../core/kb';
 import { useActive, useApp } from '../store/store';
 
 const MODES = [
@@ -13,14 +15,39 @@ const KIND: Record<string, string> = { method: '方法书', script: '参考剧�
 
 export default function Knowledge() {
   const project = useActive();
-  const toggleKnowledge = useApp((s) => s.toggleKnowledge);
   const setKnowledgeMode = useApp((s) => s.setKnowledgeMode);
-  const setKnowledgeFolder = useApp((s) => s.setKnowledgeFolder);
+  const mountDocs = useApp((s) => s.mountDocs);
   const toggleDoc = useApp((s) => s.toggleDoc);
   const pushToast = useApp((s) => s.pushToast);
+  const [probe, setProbe] = useState('');
 
   const k = project.knowledge;
   const enabled = k.docs.filter((d) => d.enabled).length;
+  const indexed = k.docs.filter((d) => d.content && d.content.trim());
+
+  const hits = useMemo(() => {
+    if (!probe.trim() || !indexed.length) return [];
+    const docs = indexed.map((d) => ({ id: d.id, name: d.name, content: d.content ?? '' }));
+    return search(buildIndex(docs), docs, probe, 3);
+  }, [probe, indexed]);
+
+  const doMount = async () => {
+    const res = await mountKnowledgeFolder();
+    if (!res) {
+      pushToast({
+        kind: 'info',
+        title: '无法读取目录',
+        detail: '桌面客户端可直接选择文件夹；浏览器需 Chromium 内核（Edge / Chrome）',
+      });
+      return;
+    }
+    mountDocs(res.folder, res.docs);
+    pushToast({
+      kind: 'success',
+      title: `已挂载 ${res.docs.length} 篇文档`,
+      detail: res.docs.length ? `索引目录：${res.folder}` : '该目录下没有 .md / .txt 文件',
+    });
+  };
 
   return (
     <div className="scroll" style={{ flex: 1 }}>
@@ -32,9 +59,9 @@ export default function Knowledge() {
           </div>
         </div>
         <div className="grow" />
-        <button className={`btn ${k.mounted ? 'ok' : ''}`} onClick={() => { toggleKnowledge(); pushToast({ kind: 'info', title: k.mounted ? '已卸载知识库' : '已挂载知识库' }); }}>
-          <Icon name={k.mounted ? 'check' : 'book'} />
-          {k.mounted ? '已挂载' : '挂载文件夹'}
+        <button className={`btn ${k.mounted ? 'ok' : ''}`} onClick={() => void doMount()}>
+          <Icon name={k.mounted ? 'refresh' : 'book'} />
+          {k.mounted ? '重新挂载 / 更新索引' : '挂载文件夹'}
         </button>
       </div>
 
@@ -46,26 +73,19 @@ export default function Knowledge() {
               <div className="row">
                 <span className="mono sm dim">{k.folder || '尚未选择文件夹'}</span>
                 <span className="grow" />
+                <button className="btn sm" onClick={() => void doMount()}>
+                  选择 / 更换文件夹
+                </button>
                 <button
                   className="btn sm"
-                  onClick={async () => {
-                    const folder = await pickFolder();
-                    if (folder) {
-                      setKnowledgeFolder(folder);
-                      pushToast({ kind: 'success', title: '知识库已挂载', detail: folder });
-                    } else {
-                      pushToast({ kind: 'info', title: '浏览器版无法读取本地目录', detail: '请使用桌面客户端（Win / macOS）选择文件夹' });
-                    }
-                  }}
+                  disabled={!indexed.length}
+                  onClick={() => pushToast({ kind: 'success', title: '索引已就绪', detail: `${indexed.length} 篇可检索，共 ${indexed.reduce((a, d) => a + (d.content?.length ?? 0), 0).toLocaleString()} 字符` })}
                 >
-                  更换文件夹
-                </button>
-                <button className="btn sm" onClick={() => pushToast({ kind: 'success', title: '索引已更新', detail: `已收录 ${k.docs.length} 篇文档` })}>
-                  <Icon name="refresh" />更新索引
+                  <Icon name="search" />查看索引状态
                 </button>
               </div>
             </div>
-            <div style={{ width: 140 }}>
+            <div style={{ width: 160 }}>
               <div className="label" style={{ marginBottom: 6 }}>状态</div>
               <span className={`tag ${k.mounted ? 'green' : ''}`}>
                 <span className="dot" />
@@ -73,6 +93,41 @@ export default function Knowledge() {
               </span>
             </div>
           </div>
+        </div>
+
+        <div className="card pad">
+          <SectionTitle right={<span className="tiny dim">{indexed.length ? `${indexed.length} 篇可检索` : '需先挂载带正文的文档'}</span>}>
+            检索测试
+          </SectionTitle>
+          <div className="row" style={{ marginBottom: 10 }}>
+            <input
+              type="text"
+              value={probe}
+              onChange={(e) => setProbe(e.target.value)}
+              placeholder="输入你正在写的题材或关键词，例如：雨夜 对峙 十年"
+            />
+          </div>
+          {probe.trim() ? (
+            hits.length ? (
+              <div className="col" style={{ gap: 8 }}>
+                {hits.map((h) => (
+                  <div key={h.id} className="card pad" style={{ padding: '9px 12px', background: 'rgba(0,0,0,0.22)' }}>
+                    <div className="row">
+                      <Icon name="book" style={{ width: 13, height: 13, color: 'var(--gold)' }} />
+                      <span className="sm strong">{h.name}</span>
+                      <span className="grow" />
+                      <span className="mono tiny dim">score {h.score.toFixed(2)}</span>
+                    </div>
+                    <div className="tiny muted" style={{ marginTop: 4, lineHeight: 1.6 }}>{h.snippet || '（无摘要）'}</div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="tiny dim">没有命中，换几个关键词试试（中文按双字匹配）</div>
+            )
+          ) : (
+            <div className="tiny dim">检索走本地 TF-IDF，不联网；命中片段会自动注入 05 阶段的提示词。</div>
+          )}
         </div>
 
         <div className="card pad">

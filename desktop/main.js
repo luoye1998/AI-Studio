@@ -120,3 +120,39 @@ ipcMain.handle('ws:appInfo', () => ({
   platform: process.platform,
   electron: process.versions.electron,
 }));
+
+// 读取知识库目录下的 .md/.txt（限深度、限大小、限数量）
+ipcMain.handle('ws:readMarkdown', async (_e, folder) => {
+  const out = [];
+  const walk = (dir, depth) => {
+    if (depth > 2 || out.length >= 200) return;
+    let names = [];
+    try {
+      names = fs.readdirSync(dir);
+    } catch {
+      return;
+    }
+    for (const name of names) {
+      if (out.length >= 200) return;
+      const p = path.join(dir, name);
+      let st = null;
+      try {
+        st = fs.statSync(p);
+      } catch {
+        continue;
+      }
+      if (st.isDirectory()) {
+        walk(p, depth + 1);
+        continue;
+      }
+      if (!/\.(md|markdown|txt)$/i.test(name) || st.size > 2_000_000) continue;
+      try {
+        out.push({ name, content: fs.readFileSync(p, 'utf8') });
+      } catch {
+        /* 跳过不可读文件 */
+      }
+    }
+  };
+  walk(folder, 0);
+  return out;
+});
