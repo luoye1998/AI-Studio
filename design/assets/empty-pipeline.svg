@@ -1,0 +1,17 @@
+﻿<!-- WorkStream Studio · empty-pipeline -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" fill="none">
+<g stroke="#3A4354" stroke-width="1.5" fill="none" stroke-linecap="round">
+  <path d="M60 200h360" stroke-dasharray="6 8" stroke="#2A3140"/>
+  <rect x="96" y="150" width="86" height="66" rx="10" fill="#0D1016"/>
+  <rect x="222" y="150" width="86" height="66" rx="10" fill="#0D1016" stroke="#2A3140" stroke-dasharray="5 6"/>
+  <rect x="348" y="150" width="60" height="66" rx="10" fill="#0D1016" stroke="#2A3140" stroke-dasharray="5 6"/>
+  <path d="M182 183h40" stroke="#2A3140" stroke-dasharray="4 6"/>
+  <path d="M308 183h40" stroke="#2A3140" stroke-dasharray="4 6"/>
+</g>
+<g stroke="#E0B055" stroke-width="1.6" fill="none" stroke-linecap="round" opacity=".55">
+  <rect x="96" y="150" width="86" height="66" rx="10"/>
+  <path d="M118 176h42M118 188h28"/>
+</g>
+<circle cx="414" cy="183" r="14" fill="none" stroke="#3A4354" stroke-width="1.5" stroke-dasharray="4 6"/>
+</svg>
+

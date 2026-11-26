@@ -316,6 +316,19 @@ select { cursor: pointer; }
   width: 20px; flex: none; padding-top: 2px;
 }
 .stage-item.on .num { color: var(--gold); }
+
+.stage-ico {
+  width: 28px; height: 28px; flex: none;
+  display: grid; place-items: center;
+  border-radius: 9px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--text-3);
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.stage-item:hover .stage-ico { color: var(--text-2); border-color: var(--line-strong); }
+.stage-item.on .stage-ico { color: var(--gold); border-color: rgba(224,176,85,0.35); background: var(--gold-soft); }
+.stage-ico.locked { color: var(--green); border-color: rgba(69,214,155,0.3); background: var(--green-soft); }
 .stage-item .body { min-width: 0; flex: 1; }
 .stage-item .nm { font-size: 12.5px; display: flex; align-items: center; gap: 6px; }
 .stage-item .sub { font-size: 10.5px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

@@ -1,0 +1,11 @@
+﻿<!-- WorkStream Studio · empty-knowledge -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" fill="none">
+<g stroke="#3A4354" stroke-width="1.5" fill="none" stroke-linecap="round">
+  <path d="M96 96h116v140H96z" fill="#0D1016"/>
+  <path d="M212 96l60-22v140l-60 22" fill="#0D1016"/>
+  <path d="M120 126h68M120 148h68M120 170h44" stroke-dasharray="4 6"/>
+  <path d="M232 118v96" stroke="#232A36"/>
+</g>
+<path d="M96 96h116v140H96z" stroke="#E0B055" stroke-width="1.5" fill="none" opacity=".5"/>
+</svg>
+

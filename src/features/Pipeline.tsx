@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Icon } from '../ui/Icons';
+import StageIcon from '../ui/StageIcon';
 import { SectionTitle } from '../ui/kit';
 import { STAGES, stageById, upstreamLocked } from '../core/stages';
 import { skillsForStage } from '../core/skills';
@@ -69,9 +70,12 @@ export default function Pipeline() {
           return (
             <div key={s.id}>
               <button className={`stage-item ${s.id === activeStage ? 'on' : ''}`} onClick={() => openStage(s.id)}>
-                <span className="num">{s.code}</span>
+                <span className={`stage-ico ${st.status === 'locked' ? 'locked' : ''}`}>
+                  <StageIcon id={s.id} />
+                </span>
                 <span className="body">
                   <span className="nm">
+                    <span className="tiny mono dim" style={{ marginRight: 2 }}>{s.code}</span>
                     {s.name}
                     {s.optional ? <span className="tag" style={{ height: 16, padding: '0 5px', fontSize: 9 }}>可选</span> : null}
                   </span>

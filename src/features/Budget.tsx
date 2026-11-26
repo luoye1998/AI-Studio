@@ -1,5 +1,5 @@
 import { Icon } from '../ui/Icons';
-import { Progress, SectionTitle, Stat } from '../ui/kit';
+import { Progress, SectionTitle, Stat, Empty } from '../ui/kit';
 import { formatCNY, remaining, spent } from '../core/budget';
 import { stageById } from '../core/stages';
 import { useActive, useApp } from '../store/store';
@@ -117,7 +117,7 @@ export default function Budget() {
               ))}
             </tbody>
           </table>
-          {!project.costs.length ? <div className="empty">还没有消费记录</div> : null}
+          {!project.costs.length ? <Empty title="还没有消费记录" hint="生成任一阶段或资产后，这里会出现明细。" illustration="budget" /> : null}
         </div>
       </div>
     </div>

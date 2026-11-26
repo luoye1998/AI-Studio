@@ -1,5 +1,6 @@
 import { useEffect, type ReactNode } from 'react';
 import { Icon } from './Icons';
+import Illustration, { type IllustrationKind } from './Illustration';
 
 export function Modal({
   open,
@@ -74,9 +75,14 @@ export function SectionTitle({ children, right }: { children: ReactNode; right?:
   );
 }
 
-export function Empty({ title, hint }: { title: string; hint?: string }) {
+export function Empty({ title, hint, illustration }: { title: string; hint?: string; illustration?: IllustrationKind }) {
   return (
     <div className="empty">
+      {illustration ? (
+        <div style={{ marginBottom: 10, display: 'flex', justifyContent: 'center' }}>
+          <Illustration kind={illustration} width={200} />
+        </div>
+      ) : null}
       <div style={{ marginBottom: 6 }}>{title}</div>
       {hint ? <div className="tiny dim">{hint}</div> : null}
     </div>

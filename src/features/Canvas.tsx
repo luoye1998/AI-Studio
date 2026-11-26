@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { Icon } from '../ui/Icons';
+import StageIcon from '../ui/StageIcon';
 import { STAGES } from '../core/stages';
 import { useActive, useApp } from '../store/store';
 import type { StageId } from '../core/types';
@@ -143,7 +144,10 @@ export default function Canvas() {
                   tabIndex={0}
                   onKeyDown={(e) => e.key === 'Enter' && openStage(s.id)}
                 >
-                  <div className="n-code">STAGE {s.code}</div>
+                  <div className="n-code" style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                    <StageIcon id={s.id} size={12} />
+                    STAGE {s.code}
+                  </div>
                   <div className="n-name">{s.name}</div>
                   <div className="n-meta">
                     <Icon

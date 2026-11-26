@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Icon } from '../ui/Icons';
-import { Modal, SectionTitle } from '../ui/kit';
+import { Modal, SectionTitle, Empty } from '../ui/kit';
 import { PALETTE_CATEGORIES, PALETTES } from '../core/palettes';
 import { formatCNY, UNIT_PRICE } from '../core/budget';
 import { useActive, useApp } from '../store/store';
@@ -130,7 +130,9 @@ export default function Assets() {
           ) : null
         )}
 
-        {!project.assets.length ? <div className="empty">还没有资产，先添加角色与场景。</div> : null}
+        {!project.assets.length ? (
+          <Empty title="还没有资产" hint="先添加角色与场景；角色写清五官、发型、服装与标志道具。" illustration="assets" />
+        ) : null}
       </div>
 
       <Modal

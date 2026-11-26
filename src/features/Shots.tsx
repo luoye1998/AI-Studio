@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Icon } from '../ui/Icons';
-import { SectionTitle } from '../ui/kit';
+import { SectionTitle, Empty } from '../ui/kit';
 import { compileShotPrompt } from '../core/prompt';
 import { formatCNY, lineSeconds, UNIT_PRICE } from '../core/budget';
 import { useActive, useApp } from '../store/store';
@@ -93,7 +93,9 @@ export default function Shots() {
               ))}
             </tbody>
           </table>
-          {!project.shots.length ? <div className="empty">还没有镜头。先在 09 阶段拆镜，或在这里手动添加。</div> : null}
+          {!project.shots.length ? (
+            <Empty title="还没有镜头" hint="先在 09 阶段拆镜，或在这里手动添加。" illustration="shots" />
+          ) : null}
         </div>
 
         <div style={{ borderLeft: '1px solid var(--line)', overflowY: 'auto', padding: 16 }}>
