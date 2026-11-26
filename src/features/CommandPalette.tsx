@@ -16,6 +16,7 @@ const VIEWS: { key: ViewKey; label: string; icon: IconName }[] = [
   { key: 'canvas', label: '画布视图', icon: 'graph' },
   { key: 'assets', label: '资产库', icon: 'layers' },
   { key: 'shots', label: '镜头', icon: 'film' },
+  { key: 'deliver', label: '交付', icon: 'download' },
   { key: 'budget', label: '成本与预算', icon: 'wallet' },
   { key: 'knowledge', label: '剧本知识库', icon: 'book' },
 ];

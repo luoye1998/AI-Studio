@@ -9,6 +9,7 @@ import Pipeline from './features/Pipeline';
 import Canvas from './features/Canvas';
 import Assets from './features/Assets';
 import Shots from './features/Shots';
+import Deliver from './features/Deliver';
 import Budget from './features/Budget';
 import Knowledge from './features/Knowledge';
 import SettingsView from './features/Settings';
@@ -20,8 +21,9 @@ const NAV: { key: ViewKey; label: string; icon: IconName; hint: string }[] = [
   { key: 'canvas', label: '画布视图', icon: 'graph', hint: '⌘2' },
   { key: 'assets', label: '资产库', icon: 'layers', hint: '⌘3' },
   { key: 'shots', label: '镜头', icon: 'film', hint: '⌘4' },
-  { key: 'budget', label: '成本与预算', icon: 'wallet', hint: '⌘5' },
-  { key: 'knowledge', label: '剧本知识库', icon: 'book', hint: '⌘6' },
+  { key: 'deliver', label: '交付', icon: 'download', hint: '⌘5' },
+  { key: 'budget', label: '成本与预算', icon: 'wallet', hint: '⌘6' },
+  { key: 'knowledge', label: '剧本知识库', icon: 'book', hint: '⌘7' },
 ];
 
 export default function App() {
@@ -55,9 +57,9 @@ export default function App() {
         e.preventDefault();
         setCommandOpen(true);
       }
-      if (mod && /^[1-6]$/.test(e.key)) {
+      if (mod && /^[1-7]$/.test(e.key)) {
         e.preventDefault();
-        const map: ViewKey[] = ['pipeline', 'canvas', 'assets', 'shots', 'budget', 'knowledge'];
+        const map: ViewKey[] = ['pipeline', 'canvas', 'assets', 'shots', 'deliver', 'budget', 'knowledge'];
         setView(map[Number(e.key) - 1]);
       }
     };
@@ -69,7 +71,7 @@ export default function App() {
     const parse = () => {
       const parts = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
       const v = parts[0] as ViewKey | undefined;
-      const valid: ViewKey[] = ['pipeline', 'canvas', 'assets', 'shots', 'budget', 'knowledge', 'settings'];
+      const valid: ViewKey[] = ['pipeline', 'canvas', 'assets', 'shots', 'deliver', 'budget', 'knowledge', 'settings'];
       if (v && valid.includes(v)) setView(v);
       if (v === 'pipeline' && parts[1] && STAGES.some((s) => s.id === parts[1])) {
         openStage(parts[1] as (typeof STAGES)[number]['id']);
@@ -195,6 +197,7 @@ export default function App() {
           {view === 'canvas' && <Canvas />}
           {view === 'assets' && <Assets />}
           {view === 'shots' && <Shots />}
+          {view === 'deliver' && <Deliver />}
           {view === 'budget' && <Budget />}
           {view === 'knowledge' && <Knowledge />}
           {view === 'settings' && <SettingsView />}

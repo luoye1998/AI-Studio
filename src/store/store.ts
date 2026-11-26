@@ -14,7 +14,7 @@ import { DEFAULT_SETTINGS, createDemoProject, createEmptyProject, uid } from '..
 import { checkBudget, round2, stageEstimate, UNIT_PRICE } from '../core/budget';
 import { generateStageContent } from '../core/gateway';
 
-export type ViewKey = 'pipeline' | 'canvas' | 'assets' | 'shots' | 'budget' | 'knowledge' | 'settings';
+export type ViewKey = 'pipeline' | 'canvas' | 'assets' | 'shots' | 'deliver' | 'budget' | 'knowledge' | 'settings';
 
 interface Toast {
   id: string;
