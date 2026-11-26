@@ -1,0 +1,28 @@
+{
+  "name": "workstream-studio",
+  "private": true,
+  "version": "0.1.0",
+  "description": "WorkStream Studio — AI 影视生产流水线（Web + Windows + macOS）",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --port 4173",
+    "typecheck": "tsc --noEmit",
+    "desktop:dev": "cd desktop && npm run dev",
+    "desktop:build:win": "cd desktop && npm run build:win",
+    "desktop:build:mac": "cd desktop && npm run build:mac"
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.3.0",
+    "typescript": "~5.9.3",
+    "vite": "^8.3.8"
+  }
+}

@@ -1,0 +1,62 @@
+appId: local.workstream.studio
+productName: WorkStream Studio
+copyright: Copyright © 2026 WorkStream
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - main.js
+  - preload.js
+  - package.json
+
+extraResources:
+  - from: ../dist
+    to: app
+    filter:
+      - '**/*'
+
+asar: true
+
+win:
+  target:
+    - target: nsis
+      arch: [x64]
+  icon: build/icon.png
+  # 本地/离线环境无法下载 winCodeSign 时跳过签名与 exe 资源改写；
+  # 正式发布请在 CI 中置为 true 并配置证书。
+  signAndEditExecutable: false
+  artifactName: WorkStream-Studio-Windows-${version}-Setup.${ext}
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: WorkStream Studio
+
+mac:
+  target:
+    - target: dmg
+      arch: [x64, arm64]
+  category: public.app-category.video
+  icon: build/icon.png
+  darkModeSupport: true
+  artifactName: WorkStream-Studio-macOS-${version}-${arch}.${ext}
+
+dmg:
+  title: WorkStream Studio
+  contents:
+    - x: 140
+      y: 220
+    - x: 400
+      y: 220
+      type: link
+      path: /Applications
+
+linux:
+  target: [AppImage]
+  category: AudioVideo
+  icon: build/icon.png

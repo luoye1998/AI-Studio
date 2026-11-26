@@ -1,0 +1,150 @@
+<div align="center">
+
+# WorkStream Studio
+
+**AI 影视生产流水线 · 一个人的电影剧组**
+
+九阶段上下文隔离 · 三级锁定 · 人工闸口 · 成本可控 · 一致性锚点
+
+`Web` · `Windows` · `macOS`
+
+</div>
+
+---
+
+## 这是什么
+
+WorkStream Studio 把「拍一部片子」拆成九个互不污染的阶段（概念锚定 → 镜头提示词），
+每个阶段独立存档，**只有你点下「确认采用」，这一步的稿子才会变成下游不可篡改的铁律**。
+中间卡两道人工闸口（G1 剧本定稿 / G2 成片终审）和一道预算闸口，超支自动挂起。
+
+它不是又一个聊天框，也不是又一个生图网站，而是**把导演方法论做成了软件流程**。
+
+### 解决的四个真实问题
+
+| 痛点 | 传统做法 | WorkStream 的解法 |
+|---|---|---|
+| **上下文串戏** | 所有事在一个对话框里聊，几十轮后 AI 忘了设定、擅自改结局 | 九阶段隔离，每阶段只喂「已锁定的上游定稿」 |
+| **人物变脸穿帮** | 写一百遍"保持人物一致" | 2×2 四视图身份卡 + 场景多角度 + LIRA 色卡，一致性做成结构化资产 |
+| **台词与镜头打架** | 5 秒视频塞 20 秒台词 | 表演阶段按语速算秒数，超时长直接标红并建议拆镜 |
+| **预算失控** | 生成完才知道花了多少 | 生成前显示预估，超支挂起，追加预算需人工审批 |
+
+---
+
+## 功能
+
+| 模块 | 能力 |
+|---|---|
+| **流水线** | 九阶段工作台：本步需求、71 项专业约束、已锁定上游上下文、成本预估、版本历史、锁稿 / 解锁 / 跳过 |
+| **画布视图** | DAG 形式的流水线：阶段是节点、闸口是边，未过闸口下游不推进 |
+| **资产库** | 角色 / 场景 / 道具 / 风格四类，2×2 四视图槽位、版本栈、定稿锁；24 套 LIRA 导演色卡 |
+| **镜头** | 场次表主视图：景别、运镜、秒数、台词秒数校验、逐镜重做（不覆盖旧结果）、编译后的视频提示词 |
+| **成本** | 预算进度、80%/100% 双档、闸口、消费明细、CSV 导出 |
+| **知识库** | 挂载本地编剧方法书与参考剧本，三种配合方式（智能匹配 / 只查方法书 / 不调用） |
+| **命令面板** | `⌘K` / `Ctrl+K` 全局搜索阶段、动作、项目 |
+
+### 快捷键
+
+| 键 | 作用 |
+|---|---|
+| `⌘K` / `Ctrl+K` | 命令面板 |
+| `⌘1`–`⌘6` | 切换视图 |
+| `Esc` | 关闭浮层 |
+
+---
+
+## 快速开始
+
+### 网页版
+
+```bash
+npm install
+npm run dev          # http://127.0.0.1:5180
+npm run build        # 产出 dist/
+npm run preview      # 预览构建产物
+```
+
+### 桌面版
+
+```bash
+cd desktop
+npm install
+npm start            # 需要先跑 npm run dev（WORKSTREAM_DEV_URL 指向 4173）
+
+# 打包
+npm run build:win    # Windows：NSIS 安装包 + 免安装版
+npm run build:mac    # macOS：dmg（需在 macOS 上执行，或走 CI）
+```
+
+> macOS 的 dmg 必须在 macOS 上构建。仓库内置 `.github/workflows/release.yml`，
+> 打 tag 后会在 macOS runner 上自动产出 dmg 并附到 Release。
+
+### 无 Key 也能用
+
+未配置模型时，内置**本地推演引擎**会产出结构完整、可直接编辑的结构化初稿
+（故事立项书、角色圣经、分场大纲、剧本、体检报告、美术清单、表演表、分镜表）。
+接上任意 OpenAI 兼容服务后，把 `src/core/prompt.ts` 的 `mockGenerate` 换成真实调用即可。
+
+---
+
+## 架构
+
+```
+src/
+  core/          纯领域逻辑（无 React 依赖）
+    types.ts     领域模型
+    stages.ts    九阶段定义
+    skills.ts    71 项导演技能
+    palettes.ts  24 套 LIRA 色卡
+    prompt.ts    提示词编译 + 本地推演引擎
+    budget.ts    成本 / 预算闸口 / 台词秒数
+    seed.ts      演示工程
+    desktop.ts   桌面能力桥接（浏览器自动降级）
+  store/store.ts 单一 Zustand store（persist 到 localStorage）
+  features/      8 个页面：Pipeline / Canvas / Assets / Shots / Budget / Knowledge / Settings / GateModal
+  ui/            设计系统：styles.css + Icons + kit
+desktop/         Electron 主进程 + preload + electron-builder 配置
+docs/            产品、架构、设计、调研文档
+design/          WorkBuddy 设计任务与产出
+```
+
+关键流程：
+
+```
+选阶段 → 勾专业约束 → 填本步需求
+   → 生成（先算预算，超支则挂起）
+   → 产出草稿进入 versions 栈
+   → 人工审阅 → 确认采用（锁定）
+   → 触发闸口 G1/G2（等待人工决策）
+   → 通过则解锁下游 / 打回则退回重做（可选重跑范围）
+```
+
+详细设计见 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)、[docs/PRODUCT.md](docs/PRODUCT.md)、[docs/DESIGN.md](docs/DESIGN.md)。
+
+---
+
+## 设计来源
+
+| 来源 | 借鉴了什么 |
+|---|---|
+| **洋子工作台**九阶段手册 | 阶段划分、上下文隔离、锁稿铁律、71 项技能、LIRA 色卡、2×2 身份卡、台词读秒 |
+| **AIGC Agent Orchestration Platform** | 薄状态机、模板版本钉住、人工闸口、预算闸口、成本计量、事件审计 |
+| TapNow / LibTV / WorkRally 等 | 生成前预估、重跑不覆盖、单镜头重做、场次表主视图、三级锁定（详见 [docs/RESEARCH.md](docs/RESEARCH.md)） |
+
+---
+
+## 状态与边界
+
+当前版本 **0.1.0**，是**可运行的完整前端产品**：
+
+- ✅ 九阶段、锁稿、闸口、预算、资产、镜头、知识库、命令面板全部可用
+- ✅ 数据本地持久化（localStorage），支持导出 / 导入 JSON
+- ✅ Windows 安装包与 macOS 构建流程齐备
+- ⚠️ 未接入真实模型（本地推演引擎代替），未做多用户协作与云端同步
+- ⚠️ 知识库目前是索引与开关的交互原型，未做真实向量检索
+
+---
+
+## License
+
+私有项目，代码所有权归仓库所有者。第三方依赖遵循各自许可证。

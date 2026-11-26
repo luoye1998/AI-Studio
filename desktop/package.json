@@ -1,0 +1,18 @@
+{
+  "name": "workstream-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "description": "WorkStream Studio desktop shell",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "cross-env WORKSTREAM_DEV_URL=http://127.0.0.1:4173 electron .",
+    "build:win": "electron-builder --win --x64",
+    "build:mac": "electron-builder --mac --universal",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  }
+}
