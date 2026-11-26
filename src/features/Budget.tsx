@@ -33,10 +33,10 @@ export default function Budget() {
 
   return (
     <div className="scroll" style={{ flex: 1 }}>
-      <div className="row" style={{ padding: '14px 22px', borderBottom: '1px solid var(--line)' }}>
+      <div className="page-head">
         <div>
-          <h2>成本与预算</h2>
-          <div className="sm dim" style={{ marginTop: 2 }}>
+          <h1>成本与预算</h1>
+          <div className="lede">
             生成前先算账：预估 → 确认 → 扣费；超支自动挂起，追加预算需人工审批。
           </div>
         </div>
@@ -51,7 +51,7 @@ export default function Budget() {
             <div style={{ width: 28 }} />
             <Stat value={formatCNY(used)} label="已花费" tone="var(--gold)" />
             <div style={{ width: 28 }} />
-            <Stat value={formatCNY(left)} label="剩余" tone={left < 0 ? 'var(--red)' : 'var(--green)'} />
+            <Stat value={formatCNY(left)} label="剩余" tone={left < 0 ? 'var(--rose)' : 'var(--teal)'} />
             <div className="grow" />
             <div style={{ width: 180 }}>
               <div className="row tiny dim" style={{ marginBottom: 5 }}>
@@ -81,7 +81,7 @@ export default function Budget() {
           <div className="col" style={{ gap: 8 }}>
             {gates.map((g) => (
               <div key={g.id} className="row card" style={{ padding: '10px 12px' }}>
-                <Icon name="shield" style={{ width: 14, height: 14, color: g.status === 'approved' ? 'var(--green)' : g.status === 'waiting' ? 'var(--amber)' : 'var(--text-3)' }} />
+                <Icon name="shield" style={{ width: 14, height: 14, color: g.status === 'approved' ? 'var(--teal)' : g.status === 'waiting' ? 'var(--amber)' : 'var(--dim)' }} />
                 <span className="sm">{g.title}</span>
                 <span className={`tag ${g.status === 'approved' ? 'green' : g.status === 'waiting' ? 'amber' : g.status === 'rejected' ? 'red' : ''}`}>
                   {g.status === 'approved' ? '已通过' : g.status === 'waiting' ? '待审批' : g.status === 'rejected' ? '已打回' : '未触发'}

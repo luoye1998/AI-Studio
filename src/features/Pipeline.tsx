@@ -168,7 +168,7 @@ export default function Pipeline() {
                 readOnly={isLocked}
                 onChange={(e) => saveDraft(activeStage, e.target.value)}
                 placeholder={`在这里写「${def.deliverable}」，或点右上角「生成初稿」让 AI 先给一版。\n\n锁定后此稿将成为下游不可篡改的铁律。`}
-                style={{ minHeight: 'calc(100vh - 330px)', fontFamily: 'var(--font)', fontSize: 13, lineHeight: 1.75 }}
+                className="doc-editor" style={{ minHeight: 'calc(100vh - 340px)', width: '100%' }}
               />
             ) : (
               <div className="card pad" style={{ minHeight: 'calc(100vh - 330px)' }}>
@@ -253,7 +253,7 @@ export default function Pipeline() {
               {upstream.length ? (
                 upstream.map((id) => (
                   <div key={id} className="row card" style={{ padding: '7px 9px' }}>
-                    <Icon name="lock" style={{ width: 12, height: 12, color: 'var(--green)' }} />
+                    <Icon name="lock" style={{ width: 12, height: 12, color: 'var(--teal)' }} />
                     <span className="sm">{stageById(id).name}</span>
                     <span className="grow" />
                     <span className="tiny dim">{project.stages[id].content.length} 字</span>

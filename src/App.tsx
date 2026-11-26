@@ -257,7 +257,7 @@ export default function App() {
           </div>
           <div className="card pad" style={{ background: 'rgba(123,140,255,0.05)', borderColor: 'rgba(123,140,255,0.2)' }}>
             <div className="row" style={{ alignItems: 'flex-start' }}>
-              <Icon name="info" style={{ width: 15, height: 15, color: 'var(--indigo)', marginTop: 2 }} />
+              <Icon name="info" style={{ width: 15, height: 15, color: 'var(--iris)', marginTop: 2 }} />
               <div className="sm muted">
                 新项目继承模板 <span className="mono">{project.templateVersion}</span>，并钉住该版本快照——之后模板升级不会影响已创建的项目。
               </div>

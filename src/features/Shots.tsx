@@ -37,15 +37,15 @@ export default function Shots() {
 
   return (
     <div className="scroll" style={{ flex: 1 }}>
-      <div className="row" style={{ padding: '14px 22px', borderBottom: '1px solid var(--line)' }}>
+      <div className="page-head">
         <div>
-          <h2>镜头</h2>
-          <div className="sm dim" style={{ marginTop: 2 }}>
+          <h1>镜头</h1>
+          <div className="lede">
             场次表是主视图，画布是辅助视图 —— 单镜头可重做，且永不覆盖旧结果。
           </div>
         </div>
         <div className="grow" />
-        <span className="tag"><span className="dot" style={{ background: 'var(--indigo)' }} />总时长 {totalSec}s</span>
+        <span className="tag"><span className="dot" style={{ background: 'var(--iris)' }} />总时长 {totalSec}s</span>
         <span className="tag green"><span className="dot" />{approved}/{project.shots.length} 已通过</span>
         <button className="btn primary" disabled={!pending} onClick={generateShots}>
           <Icon name="spark" />批量生成 · {formatCNY(pending * UNIT_PRICE.video)}
@@ -98,7 +98,7 @@ export default function Shots() {
           ) : null}
         </div>
 
-        <div style={{ borderLeft: '1px solid var(--line)', overflowY: 'auto', padding: 16 }}>
+        <div style={{ borderLeft: '1px solid var(--hair)', overflowY: 'auto', padding: 16 }}>
           {shot ? (
             <>
               <SectionTitle right={<span className="mono tiny dim">SHOT {String(shot.index).padStart(2, '0')}</span>}>
@@ -158,7 +158,7 @@ export default function Shots() {
               </SectionTitle>
               <pre
                 className="doc"
-                style={{ background: 'rgba(0,0,0,0.35)', border: '1px solid var(--line)', borderRadius: 10, padding: 12, fontSize: 11.5, whiteSpace: 'pre-wrap', margin: 0 }}
+                style={{ background: 'rgba(0,0,0,0.35)', border: '1px solid var(--hair)', borderRadius: 10, padding: 12, fontSize: 11.5, whiteSpace: 'pre-wrap', margin: 0 }}
               >
                 {compileShotPrompt(project, shot)}
               </pre>

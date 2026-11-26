@@ -51,10 +51,10 @@ export default function Knowledge() {
 
   return (
     <div className="scroll" style={{ flex: 1 }}>
-      <div className="row" style={{ padding: '14px 22px', borderBottom: '1px solid var(--line)' }}>
+      <div className="page-head">
         <div>
-          <h2>剧本知识库</h2>
-          <div className="sm dim" style={{ marginTop: 2 }}>
+          <h1>剧本知识库</h1>
+          <div className="lede">
             挂载你自有的编剧方法书与参考剧本，建立本地索引后检索调用 —— 让 05 阶段的写稿接上你的方法论。
           </div>
         </div>
@@ -141,7 +141,7 @@ export default function Knowledge() {
                   textAlign: 'left',
                   cursor: 'pointer',
                   borderColor: k.mode === m.key ? 'rgba(224,176,85,0.45)' : undefined,
-                  background: k.mode === m.key ? 'var(--gold-soft)' : undefined,
+                  background: k.mode === m.key ? 'var(--gold-wash)' : undefined,
                 }}
                 onClick={() => setKnowledgeMode(m.key)}
               >
@@ -165,7 +165,7 @@ export default function Knowledge() {
                 style={{ padding: '9px 12px', cursor: 'pointer', textAlign: 'left', borderColor: d.enabled ? 'rgba(69,214,155,0.28)' : undefined }}
                 onClick={() => toggleDoc(d.id)}
               >
-                <Icon name="book" style={{ width: 14, height: 14, color: d.enabled ? 'var(--green)' : 'var(--text-3)' }} />
+                <Icon name="book" style={{ width: 14, height: 14, color: d.enabled ? 'var(--teal)' : 'var(--dim)' }} />
                 <span className="sm">{d.name}</span>
                 <span className="tag">{KIND[d.kind]}</span>
                 <span className="grow" />
@@ -179,7 +179,7 @@ export default function Knowledge() {
 
         <div className="card pad" style={{ background: 'rgba(123,140,255,0.05)', borderColor: 'rgba(123,140,255,0.2)' }}>
           <div className="row" style={{ alignItems: 'flex-start' }}>
-            <Icon name="info" style={{ width: 15, height: 15, color: 'var(--indigo)', marginTop: 2 }} />
+            <Icon name="info" style={{ width: 15, height: 15, color: 'var(--iris)', marginTop: 2 }} />
             <div className="sm muted">
               知识库只用于 05 正式剧本阶段：把「方法书」的结构习惯与「参考剧本」的节奏借过来，
               不会直接复制文本。启用文档越多，上下文越长、成本越高 —— 按需开启。

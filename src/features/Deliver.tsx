@@ -6,8 +6,8 @@ import { formatCNY, spent } from '../core/budget';
 import { useActive, useApp } from '../store/store';
 
 const STATUS_COLOR: Record<string, string> = {
-  approved: 'var(--green)',
-  generated: 'var(--indigo)',
+  approved: 'var(--teal)',
+  generated: 'var(--iris)',
   planned: 'rgba(255,255,255,0.18)',
 };
 
@@ -30,15 +30,15 @@ export default function Deliver() {
 
   return (
     <div className="scroll" style={{ flex: 1 }}>
-      <div className="row" style={{ padding: '14px 22px', borderBottom: '1px solid var(--line)' }}>
+      <div className="page-head">
         <div>
-          <h2>交付</h2>
-          <div className="sm dim" style={{ marginTop: 2 }}>
+          <h1>交付</h1>
+          <div className="lede">
             镜头排布、自检与导出 —— 成片之前最后一道关。
           </div>
         </div>
         <div className="grow" />
-        <span className="tag"><span className="dot" style={{ background: 'var(--indigo)' }} />{blocks.length} 镜 · {total}s</span>
+        <span className="tag"><span className="dot" style={{ background: 'var(--iris)' }} />{blocks.length} 镜 · {total}s</span>
         <span className={`tag ${ready ? 'green' : 'amber'}`}>
           <span className="dot" />
           自检 {passed}/{checks.length}
@@ -91,7 +91,7 @@ export default function Deliver() {
                 <div key={c.key} className="row">
                   <Icon
                     name={c.ok ? 'check' : 'alert'}
-                    style={{ width: 14, height: 14, color: c.ok ? 'var(--green)' : 'var(--amber)' }}
+                    style={{ width: 14, height: 14, color: c.ok ? 'var(--teal)' : 'var(--amber)' }}
                   />
                   <span className="sm">{c.label}</span>
                   <span className="grow" />

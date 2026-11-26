@@ -97,10 +97,10 @@ export default function Canvas() {
 
   return (
     <div className="scroll" style={{ flex: 1 }}>
-      <div className="row" style={{ padding: '14px 22px', borderBottom: '1px solid var(--line)' }}>
+      <div className="page-head">
         <div>
-          <h2>画布视图</h2>
-          <div className="sm dim" style={{ marginTop: 2 }}>
+          <h1>画布视图</h1>
+          <div className="lede">
             流水线的可执行形态 —— 阶段是节点，闸口是边；只有通过闸口，下游才被解锁。
           </div>
         </div>
@@ -201,14 +201,14 @@ export default function Canvas() {
             ) : null}
 
             <div style={{ position: 'absolute', left: PAD, top: height - 44 }} className="row">
-              <span className="tag"><span className="dot" style={{ background: 'var(--text-3)' }} />实线 = 依赖</span>
+              <span className="tag"><span className="dot" style={{ background: 'var(--dim)' }} />实线 = 依赖</span>
               <span className="tag amber"><span className="dot" />虚线 = 闸口约束</span>
               <span className="tiny dim">点节点进入阶段 · 点闸口进入审批</span>
             </div>
           </div>
         </div>
 
-        <div style={{ borderLeft: '1px solid var(--line)', padding: 16, overflowY: 'auto', background: 'rgba(0,0,0,0.16)' }}>
+        <div style={{ borderLeft: '1px solid var(--hair)', padding: 16, overflowY: 'auto', background: 'rgba(0,0,0,0.16)' }}>
           <div className="label" style={{ marginBottom: 8 }}>运行状态</div>
           <div className="card pad" style={{ marginBottom: 12 }}>
             <div className="kv"><span className="k">模板</span><span className="v">{project.templateVersion}</span></div>
@@ -227,7 +227,7 @@ export default function Canvas() {
                 onClick={() => setGateOpen(g.id)}
               >
                 <div className="row">
-                  <Icon name="shield" style={{ width: 13, height: 13, color: g.status === 'approved' ? 'var(--green)' : g.status === 'waiting' ? 'var(--amber)' : 'var(--text-3)' }} />
+                  <Icon name="shield" style={{ width: 13, height: 13, color: g.status === 'approved' ? 'var(--teal)' : g.status === 'waiting' ? 'var(--amber)' : 'var(--dim)' }} />
                   <span className="sm">{g.title}</span>
                 </div>
                 <div className="row" style={{ marginTop: 4 }}>

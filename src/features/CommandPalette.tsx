@@ -77,7 +77,7 @@ export default function CommandPalette() {
     <div className="overlay" onMouseDown={(e) => e.target === e.currentTarget && setOpen(false)}>
       <div className="modal cmdk" role="dialog" aria-modal>
         <div className="row" style={{ padding: '0 6px' }}>
-          <Icon name="search" style={{ width: 16, height: 16, marginLeft: 12, color: 'var(--text-3)' }} />
+          <Icon name="search" style={{ width: 16, height: 16, marginLeft: 12, color: 'var(--dim)' }} />
           <input
             ref={inputRef}
             type="text"

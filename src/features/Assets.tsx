@@ -34,10 +34,10 @@ export default function Assets() {
 
   return (
     <div className="scroll" style={{ flex: 1 }}>
-      <div className="row" style={{ padding: '14px 22px', borderBottom: '1px solid var(--line)' }}>
+      <div className="page-head">
         <div>
-          <h2>资产库</h2>
-          <div className="sm dim" style={{ marginTop: 2 }}>
+          <h1>资产库</h1>
+          <div className="lede">
             一致性靠锚点，不靠提示词 —— 角色先出 2×2 四视图，后续所有镜头只引用、不重画。
           </div>
         </div>
@@ -54,7 +54,7 @@ export default function Assets() {
       <div style={{ padding: '18px 22px 40px' }}>
         {current ? (
           <div className="card pad" style={{ marginBottom: 18, display: 'flex', gap: 14, alignItems: 'center' }}>
-            <div className="swatch" style={{ gap: 6 }}>
+            <div className="swatch lg" style={{ gap: 8 }}>
               {current.colors.map((c) => (
                 <i key={c} style={{ background: c, width: 26, height: 34, borderRadius: 6 }} />
               ))}
@@ -65,7 +65,7 @@ export default function Assets() {
                 <span className="tag gold">{current.name}</span>
                 <span className="tag">{current.category}</span>
               </div>
-              <div className="sm dim" style={{ marginTop: 2 }}>{current.mood} · 全片影调基准，所有资产生图沿用</div>
+              <div className="lede">{current.mood} · 全片影调基准，所有资产生图沿用</div>
             </div>
           </div>
         ) : null}

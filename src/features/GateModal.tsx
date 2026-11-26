@@ -154,7 +154,7 @@ export default function GateModal() {
                   <button
                     key={o.k}
                     className="card pad"
-                    style={{ flex: 1, cursor: 'pointer', textAlign: 'left', borderColor: scope === o.k ? 'rgba(224,176,85,0.45)' : undefined, background: scope === o.k ? 'var(--gold-soft)' : undefined }}
+                    style={{ flex: 1, cursor: 'pointer', textAlign: 'left', borderColor: scope === o.k ? 'rgba(224,176,85,0.45)' : undefined, background: scope === o.k ? 'var(--gold-wash)' : undefined }}
                     onClick={() => setScope(o.k)}
                   >
                     <div className="mono sm">{o.t}</div>

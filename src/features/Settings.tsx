@@ -49,10 +49,10 @@ export default function SettingsView() {
 
   return (
     <div className="scroll" style={{ flex: 1 }}>
-      <div className="row" style={{ padding: '14px 22px', borderBottom: '1px solid var(--line)' }}>
+      <div className="page-head">
         <div>
-          <h2>设置</h2>
-          <div className="sm dim" style={{ marginTop: 2 }}>模型通道、数据与外观</div>
+          <h1>设置</h1>
+          <div className="lede">模型通道、数据与外观</div>
         </div>
       </div>
 
@@ -146,9 +146,9 @@ export default function SettingsView() {
             <div className="sm muted">
               网页版已支持安装为独立应用（离线可打开），三条路径任选：
             </div>
-            <div className="kv"><span className="k">Windows</span><span className="v" style={{ fontFamily: 'var(--font)', fontSize: 12 }}>用安装包，或 Edge 地址栏「安装应用」</span></div>
-            <div className="kv"><span className="k">macOS</span><span className="v" style={{ fontFamily: 'var(--font)', fontSize: 12 }}>Safari「文件 → 添加到程序坞」/ Chrome「安装 WorkStream」</span></div>
-            <div className="kv"><span className="k">macOS 原生 dmg</span><span className="v" style={{ fontFamily: 'var(--font)', fontSize: 12 }}>GitHub Actions 打 tag 后自动产出</span></div>
+            <div className="kv"><span className="k">Windows</span><span className="v" style={{ fontFamily: 'var(--sans)', fontSize: 12 }}>用安装包，或 Edge 地址栏「安装应用」</span></div>
+            <div className="kv"><span className="k">macOS</span><span className="v" style={{ fontFamily: 'var(--sans)', fontSize: 12 }}>Safari「文件 → 添加到程序坞」/ Chrome「安装 WorkStream」</span></div>
+            <div className="kv"><span className="k">macOS 原生 dmg</span><span className="v" style={{ fontFamily: 'var(--sans)', fontSize: 12 }}>GitHub Actions 打 tag 后自动产出</span></div>
             <div className="row" style={{ marginTop: 6 }}>
               <button
                 className="btn sm"

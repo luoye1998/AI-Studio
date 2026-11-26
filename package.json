@@ -16,6 +16,7 @@
     "desktop:build:mac": "cd desktop && npm run build:mac"
   },
   "dependencies": {
+    "lucide-react": "^1.81.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "zustand": "^5.0.8"
