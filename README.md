@@ -12,6 +12,16 @@
 
 ---
 
+![流水线工作台](docs/screenshots/pipeline.png)
+
+<p align="center"><sub>九阶段工作台：左阶段导航 · 中编辑区 · 右「本步需求 + 专业约束 + 已锁定上游 + 成本」</sub></p>
+
+![桌面客户端](docs/screenshots/desktop.png)
+
+<p align="center"><sub>Windows 客户端实拍（Electron 外壳，与网页版同一构建）</sub></p>
+
+---
+
 ## 这是什么
 
 WorkStream Studio 把「拍一部片子」拆成九个互不污染的阶段（概念锚定 → 镜头提示词），
