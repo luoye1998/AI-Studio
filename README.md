@@ -93,6 +93,16 @@ npm run test         # vitest：预算闸口 / 台词读秒 / 上下文隔离 / 
 npm run typecheck    # tsc --noEmit（strict）
 ```
 
+### 三条客户端路径
+
+| 平台 | 方式 | 说明 |
+|---|---|---|
+| Windows | NSIS 安装包 | 已产出 `WorkStream-Studio-Windows-*.exe`，可选安装目录 |
+| Windows / macOS | **PWA 安装** | 构建后由浏览器「安装应用 / 添加到程序坞」，独立窗口 + 离线可用 |
+| macOS | 原生 dmg | 需在 macOS 上 `npm run build:mac`，或打 tag 走 Actions |
+
+PWA 之所以单列，是因为它是**跨平台零成本**的一条：`npm run build` 产出的 `dist/` 丢到任意静态托管上，macOS 用户 Safari「文件 → 添加到程序坞」即可得到一个独立窗口的应用，数据仍存本机。
+
 > macOS 的 dmg 必须在 macOS 上构建。仓库内置 `.github/workflows/release.yml`，
 > 打 tag 后会在 macOS runner 上自动产出 dmg 并附到 Release。
 

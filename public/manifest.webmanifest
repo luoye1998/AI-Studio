@@ -1,0 +1,23 @@
+{
+  "name": "WorkStream Studio — AI 影视生产流水线",
+  "short_name": "WorkStream",
+  "description": "九阶段流水线 · 人工闸口 · 资产一致性 · 成本预算 —— 一个人的电影工作室",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#07080B",
+  "theme_color": "#07080B",
+  "lang": "zh-CN",
+  "categories": ["productivity", "video"],
+  "icons": [
+    { "src": "./icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "./icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "./icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "流水线", "url": "./#/pipeline" },
+    { "name": "镜头", "url": "./#/shots" },
+    { "name": "成本", "url": "./#/budget" }
+  ]
+}

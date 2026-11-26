@@ -129,6 +129,27 @@ export default function SettingsView() {
         </div>
 
         <div className="card pad">
+          <SectionTitle right={<span className="tiny dim">PWA · 可安装</span>}>安装为客户端</SectionTitle>
+          <div className="col" style={{ gap: 8 }}>
+            <div className="sm muted">
+              网页版已支持安装为独立应用（离线可打开），三条路径任选：
+            </div>
+            <div className="kv"><span className="k">Windows</span><span className="v" style={{ fontFamily: 'var(--font)', fontSize: 12 }}>用安装包，或 Edge 地址栏「安装应用」</span></div>
+            <div className="kv"><span className="k">macOS</span><span className="v" style={{ fontFamily: 'var(--font)', fontSize: 12 }}>Safari「文件 → 添加到程序坞」/ Chrome「安装 WorkStream」</span></div>
+            <div className="kv"><span className="k">macOS 原生 dmg</span><span className="v" style={{ fontFamily: 'var(--font)', fontSize: 12 }}>GitHub Actions 打 tag 后自动产出</span></div>
+            <div className="row" style={{ marginTop: 6 }}>
+              <button
+                className="btn sm"
+                onClick={() => pushToast({ kind: 'info', title: '安装提示', detail: '浏览器地址栏右侧「安装」图标，或菜单里「安装 WorkStream」' })}
+              >
+                <Icon name="download" />如何安装
+              </button>
+              <span className="tiny dim">离线可打开 · 数据仍存在本机</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="card pad">
           <SectionTitle>关于</SectionTitle>
           <div className="sm muted" style={{ lineHeight: 1.8 }}>
             <b>WorkStream Studio 0.1.0</b> —— AI 影视生产流水线。九阶段上下文隔离、三级锁定、
