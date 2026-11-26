@@ -37,6 +37,7 @@ export default function Pipeline() {
   const skipStage = useApp((s) => s.skipStage);
   const setGateOpen = useApp((s) => s.setGateOpen);
   const pushToast = useApp((s) => s.pushToast);
+  const generating = useApp((s) => s.ui.generating);
 
   const def = stageById(activeStage);
   const state = project.stages[activeStage];
@@ -108,8 +109,13 @@ export default function Pipeline() {
             {state.status !== 'locked' ? (
               <>
                 <button className="btn" onClick={copyPrompt}><Icon name="copy" />复制本步提示词</button>
-                <button className="btn" onClick={() => generateStage(activeStage)}>
-                  <Icon name="spark" />生成初稿 · {formatCNY(est)}
+                <button
+                  className="btn"
+                  disabled={generating === activeStage}
+                  onClick={() => void generateStage(activeStage)}
+                >
+                  <Icon name={generating === activeStage ? 'clock' : 'spark'} />
+                  {generating === activeStage ? '生成中…' : `生成初稿 · ${formatCNY(est)}`}
                 </button>
                 <button className="btn primary" onClick={() => lockStage(activeStage)}>
                   <Icon name="check" />确认采用

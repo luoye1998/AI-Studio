@@ -12,7 +12,7 @@ import type {
 import { STAGES, stageById } from '../core/stages';
 import { DEFAULT_SETTINGS, createDemoProject, createEmptyProject, uid } from '../core/seed';
 import { checkBudget, round2, stageEstimate, UNIT_PRICE } from '../core/budget';
-import { mockGenerate } from '../core/prompt';
+import { generateStageContent } from '../core/gateway';
 
 export type ViewKey = 'pipeline' | 'canvas' | 'assets' | 'shots' | 'budget' | 'knowledge' | 'settings';
 
@@ -29,6 +29,7 @@ interface UIState {
   toasts: Toast[];
   commandOpen: boolean;
   gateOpen: string | null;
+  generating: StageId | null;
 }
 
 interface AppState {
@@ -58,7 +59,7 @@ interface AppState {
   // stages
   setStageNotes: (id: StageId, notes: string) => void;
   toggleSkill: (id: StageId, code: string) => void;
-  generateStage: (id: StageId) => void;
+  generateStage: (id: StageId) => Promise<void>;
   saveDraft: (id: StageId, content: string) => void;
   lockStage: (id: StageId) => void;
   unlockStage: (id: StageId) => void;
@@ -108,7 +109,7 @@ export const useApp = create<AppState>()(
       projects: [createDemoProject()],
       activeId: '',
       settings: DEFAULT_SETTINGS,
-      ui: { view: 'pipeline', activeStage: 'script', toasts: [], commandOpen: false, gateOpen: null },
+      ui: { view: 'pipeline', activeStage: 'script', toasts: [], commandOpen: false, gateOpen: null, generating: null },
 
       active: () => {
         const { projects, activeId } = get();
@@ -198,7 +199,7 @@ export const useApp = create<AppState>()(
           }),
         })),
 
-      generateStage: (id) => {
+      generateStage: async (id) => {
         const p = get().active();
         if (p.stages[id].status === 'locked') {
           get().pushToast({ kind: 'warn', title: '该阶段已锁定', detail: '如需重做，请先解锁并说明原因' });
@@ -232,8 +233,17 @@ export const useApp = create<AppState>()(
           return;
         }
 
-        const content = mockGenerate(p, id);
         const next = STAGES.find((s) => s.id === id);
+        set((s) => ({ ui: { ...s.ui, generating: id } }));
+
+        let result;
+        try {
+          result = await generateStageContent(p, id, get().settings.providers);
+        } finally {
+          set((s) => ({ ui: { ...s.ui, generating: null } }));
+        }
+        const content = result.content;
+
         set((s) => ({
           projects: s.projects.map((x) => {
             if (x.id !== p.id) return x;
@@ -243,7 +253,7 @@ export const useApp = create<AppState>()(
               createdAt: Date.now(),
               content,
               skills: st.selectedSkills,
-              note: `第 ${st.versions.length + 1} 版`,
+              note: `第 ${st.versions.length + 1} 版${result.source === 'model' ? ` · ${result.model ?? '模型'}` : ' · 本地推演'}`,
               cost,
             };
             let proj: Project = {
@@ -254,10 +264,23 @@ export const useApp = create<AppState>()(
               },
             };
             proj = addCost(proj, `${next?.code} ${next?.name} · 生成`, next?.unit ?? 'text', cost, id);
-            return log(proj, 'stage.generated', `${next?.name} 生成完成，等待审阅（¥${cost.toFixed(2)}）`, 'success');
+            return log(
+              proj,
+              'stage.generated',
+              `${next?.name} 生成完成（${result.source === 'model' ? `模型 ${result.model}` : '本地推演'}，${Math.round(result.latencyMs)}ms）`,
+              'success'
+            );
           }),
         }));
-        get().pushToast({ kind: 'success', title: '生成完成', detail: `${next?.name} · ¥${cost.toFixed(2)}，请审阅后锁定` });
+        get().pushToast(
+          result.note
+            ? { kind: 'warn', title: '模型调用失败，已本地兜底', detail: result.note }
+            : {
+                kind: 'success',
+                title: result.source === 'model' ? '模型生成完成' : '本地推演完成',
+                detail: `${next?.name} · ¥${cost.toFixed(2)} · ${Math.round(result.latencyMs)}ms`,
+              }
+        );
       },
 
       saveDraft: (id, content) =>

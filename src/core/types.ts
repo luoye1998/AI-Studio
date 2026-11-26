@@ -161,6 +161,8 @@ export interface ProviderConfig {
   provider: string;
   baseUrl: string;
   model: string;
+  /** 仅存本机 localStorage，不上传；留空则走本地推演引擎 */
+  apiKey?: string;
   enabled: boolean;
 }
 

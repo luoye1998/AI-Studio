@@ -89,7 +89,7 @@ npm run build:mac    # macOS：dmg（需在 macOS 上执行，或走 CI）
 ### 测试
 
 ```bash
-npm run test         # vitest：预算闸口 / 台词读秒 / 上下文隔离 / 提示词编译 / 推演引擎（20 用例）
+npm run test         # vitest：32 用例（预算闸口 / 台词读秒 / 上下文隔离 / 提示词编译 / 推演引擎 / Store 状态流转）
 npm run typecheck    # tsc --noEmit（strict）
 ```
 
@@ -109,11 +109,15 @@ PWA 之所以单列，是因为它是**跨平台零成本**的一条：`npm run 
 > **注意**：推送 workflow 文件需要 token 具备 `Workflows` 权限（GitHub fine-grained PAT 的
 > `Repository permissions → Workflows: Read and write`）。当前用 Contents 权限推送，因此工作流以模板形式存放。
 
-### 无 Key 也能用
+### 无 Key 也能用 · 有 Key 就是真的
 
-未配置模型时，内置**本地推演引擎**会产出结构完整、可直接编辑的结构化初稿
-（故事立项书、角色圣经、分场大纲、剧本、体检报告、美术清单、表演表、分镜表）。
-接上任意 OpenAI 兼容服务后，把 `src/core/prompt.ts` 的 `mockGenerate` 换成真实调用即可。
+内置**双通道**（`src/core/gateway.ts`）：
+
+- **配了通道**（设置 → 模型通道：Base URL + API Key + 模型名，OpenAI 兼容）→ 真实调用，失败自动降级
+- **没配**（或调用失败）→ 本地推演引擎，产出结构完整、可直接编辑的结构化初稿
+
+所以没 API Key 也能把九阶段流程完整走一遍；填上 Key 立刻变真，不用改代码。
+Key 只存本机 localStorage，不上传、不写进导出文件。
 
 ---
 
@@ -127,6 +131,7 @@ src/
     skills.ts    71 项导演技能
     palettes.ts  24 套 LIRA 色卡
     prompt.ts    提示词编译 + 本地推演引擎
+    gateway.ts   双通道生成（OpenAI 兼容 / 本地兜底）
     budget.ts    成本 / 预算闸口 / 台词秒数
     seed.ts      演示工程
     desktop.ts   桌面能力桥接（浏览器自动降级）

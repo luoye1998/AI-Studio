@@ -86,6 +86,18 @@ export default function SettingsView() {
                     <input type="text" value={p.model} onChange={(e) => updateProvider(p.kind, { model: e.target.value })} placeholder="deepseek-chat" />
                   </div>
                 </div>
+                {p.kind === 'text' ? (
+                  <div style={{ marginTop: 8 }}>
+                    <div className="label" style={{ marginBottom: 4 }}>API Key（留空则走本地推演）</div>
+                    <input
+                      type="password"
+                      value={p.apiKey ?? ''}
+                      onChange={(e) => updateProvider(p.kind, { apiKey: e.target.value })}
+                      placeholder="sk-..."
+                      autoComplete="off"
+                    />
+                  </div>
+                ) : null}
               </div>
             ))}
           </div>
