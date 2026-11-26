@@ -103,8 +103,11 @@ npm run typecheck    # tsc --noEmit（strict）
 
 PWA 之所以单列，是因为它是**跨平台零成本**的一条：`npm run build` 产出的 `dist/` 丢到任意静态托管上，macOS 用户 Safari「文件 → 添加到程序坞」即可得到一个独立窗口的应用，数据仍存本机。
 
-> macOS 的 dmg 必须在 macOS 上构建。仓库内置 `.github/workflows/release.yml`，
-> 打 tag 后会在 macOS runner 上自动产出 dmg 并附到 Release。
+> macOS 的 dmg 必须在 macOS 上构建。CI 模板见 [`docs/ci/release.yml.example`](docs/ci/release.yml.example)，
+> 复制到 `.github/workflows/release.yml` 后打 tag 即可自动产出 dmg 并附到 Release。
+>
+> **注意**：推送 workflow 文件需要 token 具备 `Workflows` 权限（GitHub fine-grained PAT 的
+> `Repository permissions → Workflows: Read and write`）。当前用 Contents 权限推送，因此工作流以模板形式存放。
 
 ### 无 Key 也能用
 
