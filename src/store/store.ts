@@ -48,6 +48,7 @@ interface AppState {
   // project
   active: () => Project;
   createProject: (name: string, logline: string) => void;
+  importProjects: (incoming: Project[]) => number;
   deleteProject: (id: string) => void;
   selectProject: (id: string) => void;
   renameProject: (name: string) => void;
@@ -131,6 +132,19 @@ export const useApp = create<AppState>()(
           ui: { ...s.ui, view: 'pipeline', activeStage: 'concept' },
         }));
         get().pushToast({ kind: 'success', title: '项目已创建', detail: p.name });
+      },
+
+      importProjects: (incoming) => {
+        if (!Array.isArray(incoming) || !incoming.length) return 0;
+        const valid = incoming.filter((p) => p && p.id && p.stages && p.name);
+        if (!valid.length) return 0;
+        set((s) => {
+          const map = new Map(s.projects.map((p) => [p.id, p]));
+          for (const p of valid) map.set(p.id, { ...p, updatedAt: Date.now() });
+          const projects = Array.from(map.values());
+          return { projects, activeId: valid[0].id, ui: { ...s.ui, view: 'pipeline', activeStage: 'concept' } };
+        });
+        return valid.length;
       },
 
       deleteProject: (id) =>

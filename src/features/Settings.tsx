@@ -1,14 +1,44 @@
+import { useRef } from 'react';
 import { Icon } from '../ui/Icons';
 import { SectionTitle } from '../ui/kit';
-import { isDesktop, saveFile } from '../core/desktop';
+import { isDesktop, openProjectFile, saveFile } from '../core/desktop';
 import { useApp } from '../store/store';
+import type { Project } from '../core/types';
 
 export default function SettingsView() {
   const settings = useApp((s) => s.settings);
   const updateProvider = useApp((s) => s.updateProvider);
   const projects = useApp((s) => s.projects);
   const activeId = useApp((s) => s.activeId);
+  const importProjects = useApp((s) => s.importProjects);
   const pushToast = useApp((s) => s.pushToast);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const applyImport = (raw: string) => {
+    try {
+      const data = JSON.parse(raw) as { projects?: Project[] } | Project;
+      const list = Array.isArray((data as { projects?: Project[] }).projects)
+        ? (data as { projects: Project[] }).projects
+        : [data as Project];
+      const n = importProjects(list);
+      pushToast(
+        n
+          ? { kind: 'success', title: `已导入 ${n} 个工程`, detail: '同名工程会被覆盖' }
+          : { kind: 'error', title: '导入失败', detail: '文件里没有可识别的工程' }
+      );
+    } catch (e) {
+      pushToast({ kind: 'error', title: '解析失败', detail: String(e) });
+    }
+  };
+
+  const doImport = async () => {
+    if (isDesktop()) {
+      const raw = await openProjectFile();
+      if (raw) applyImport(raw);
+      return;
+    }
+    fileRef.current?.click();
+  };
 
   const exportAll = async () => {
     const data = JSON.stringify({ version: 1, exportedAt: Date.now(), settings, projects }, null, 2);
@@ -68,6 +98,18 @@ export default function SettingsView() {
           <SectionTitle>数据</SectionTitle>
           <div className="row" style={{ flexWrap: 'wrap', gap: 8 }}>
             <button className="btn" onClick={exportAll}><Icon name="download" />导出全部工程（JSON）</button>
+            <button className="btn" onClick={doImport}><Icon name="layers" />导入工程（JSON）</button>
+            <input
+              ref={fileRef}
+              type="file"
+              accept="application/json,.json"
+              style={{ display: 'none' }}
+              onChange={async (e) => {
+                const f = e.target.files?.[0];
+                if (f) applyImport(await f.text());
+                e.target.value = '';
+              }}
+            />
             <button className="btn" onClick={() => window.print()}><Icon name="film" />打印 / 导出 PDF</button>
             <button
               className="btn danger"

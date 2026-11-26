@@ -9,6 +9,8 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --port 4173",
     "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "desktop:dev": "cd desktop && npm run dev",
     "desktop:build:win": "cd desktop && npm run build:win",
     "desktop:build:mac": "cd desktop && npm run build:mac"
@@ -23,6 +25,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.3.0",
     "typescript": "~5.9.3",
-    "vite": "^8.3.8"
+    "vite": "^8.3.8",
+    "vitest": "^3.2.7"
   }
 }

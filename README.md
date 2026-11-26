@@ -86,6 +86,13 @@ npm run build:win    # Windows：NSIS 安装包 + 免安装版
 npm run build:mac    # macOS：dmg（需在 macOS 上执行，或走 CI）
 ```
 
+### 测试
+
+```bash
+npm run test         # vitest：预算闸口 / 台词读秒 / 上下文隔离 / 提示词编译 / 推演引擎（20 用例）
+npm run typecheck    # tsc --noEmit（strict）
+```
+
 > macOS 的 dmg 必须在 macOS 上构建。仓库内置 `.github/workflows/release.yml`，
 > 打 tag 后会在 macOS runner 上自动产出 dmg 并附到 Release。
 
